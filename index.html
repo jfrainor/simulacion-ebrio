@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simulación de Ebrio</title>
+</head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<body>
+    <h1>Simulación de Ebrio</h1>
+    <button onclick="iniciarSimulacion()">Iniciar Simulación</button>
+    <p id="resultado"></p>
+    <div id="simulacion">
+        <div id="ebrio"></div>
+    </div>
+    <script>
+        function caminarUnaCalle() {
+            const direcciones = ["norte", "sur", "este", "oeste"];
+            return direcciones[Math.floor(Math.random() * direcciones.length)];
+        }
+
+        function actualizarPosicion(posicion, direccion) {
+            const paso = 20; // Tamaño de paso en píxeles
+            if (direccion === "norte") {
+                posicion[1] -= paso;
+            } else if (direccion === "sur") {
+                posicion[1] += paso;
+            } else if (direccion === "este") {
+                posicion[0] += paso;
+            } else {
+                posicion[0] -= paso;
+            }
+        }
+
+        
+        function crearCuadricula() {
+            const cuadricula = document.getElementById("simulacion");
+            const numFilas = 20; // Número de filas de la cuadrícula
+            const numColumnas = 20; // Número de columnas de la cuadrícula
+            const tamanoCelda = 20; // Tamaño de cada celda en píxeles
+
+            for (let fila = 0; fila < numFilas; fila++) {
+                for (let columna = 0; columna < numColumnas; columna++) {
+                    const celda = document.createElement("div");
+                    celda.className = "calle";
+                    celda.style.width = tamanoCelda + "px";
+                    celda.style.height = tamanoCelda + "px";
+                    celda.style.left = columna * tamanoCelda + "px";
+                    celda.style.top = fila * tamanoCelda + "px";
+                    cuadricula.appendChild(celda);
+                }
+            }
+        }
+
+        function iniciarSimulacion() {
+            const ebrio = document.getElementById("ebrio");
+            const resultado = document.getElementById("resultado");
+
+            const posicion = [200, 200]; // Posición inicial en el centro del contenedor
+
+            const numPasos = 10;
+            let contador2Calles = 0;
+
+            for (let i = 0; i < numPasos; i++) {
+                const direccion = caminarUnaCalle();
+                actualizarPosicion(posicion, direccion);
+                ebrio.style.left = posicion[0] + "px";
+                ebrio.style.top = posicion[1] + "px";
+
+                if (Math.abs(posicion[0] - 200) === 40 || Math.abs(posicion[1] - 200) === 40) {
+                    contador2Calles++;
+                }
+            }
+
+            const probabilidad = contador2Calles / numPasos;
+            let mensaje = `La probabilidad de terminar a dos calles de donde empezó es aproximadamente ${probabilidad.toFixed(4)*100}%.`;
+
+            if (probabilidad > 0) {
+                if (posicion[0] === 200 && posicion[1] === 200) {
+                    mensaje += " El ebrio volvió al inicio.";
+                } else {
+                    const distanciaDesdeInicio = Math.abs(posicion[0] - 200) / 20 + Math.abs(posicion[1] - 200) / 20;
+                    mensaje += ` El ebrio terminó a ${distanciaDesdeInicio} calles del inicio.`;
+                }
+            }
+
+            resultado.innerHTML = mensaje;
+        }
+        // Llama a la función para crear la cuadrícula al cargar la página
+        window.onload = crearCuadricula;
+    </script>
+</body>
+</html>
