@@ -1,7 +1,9 @@
+
 Realizado por:
 José Fraino
 Linda Arias
 
 Link:
 
-El ebrio realiza 10 pasos (caminarUnaCalle) y se actualiza su posición en el contenedor de simulación. Se calcula la probabilidad de que termine a dos calles de donde comenzó y se muestra en el párrafo con id "resultado".
+Este código calculará la probabilidad de que el ebrio termine a dos calles de donde comenzó después de caminar 10 calles completas, y mostrará el resultado en el párrafo con el id "resultado" en la página web.
+
